@@ -16,7 +16,7 @@ st.subheader("Instantly decode Verilog, VHDL, or Arduino code with Llama 3.3 via
 st.sidebar.title("💳 Premium Features")
 st.sidebar.markdown("""
 Get unlimited daily tokens, advanced multi-file synthesis, and PDF downloads.
-* **[Get Lifetime Local Source Code ($4.99)](https://gumroad.com)** 
+* **[Get Lifetime Local Source Code ($4.99)](https://japjamunpan.gumroad.com/l/ece-ai-code)** 
 """)
 
 # Inputs
@@ -50,7 +50,6 @@ if st.button("Generate Breakdown & Testbench", type="primary"):
                     max_tokens=2500
                 )
                 
-                # FIXED: Mapped choice index [0] to extract text flawlessly
                 ai_response = completion.choices[0].message.content
                 st.success("Analysis Complete!")
                 st.markdown(ai_response)
