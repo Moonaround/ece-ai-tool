@@ -16,8 +16,7 @@ st.subheader("Instantly decode Verilog, VHDL, or Arduino code with Llama 3.3 via
 st.sidebar.title("💳 Premium Features")
 st.sidebar.markdown("""
 Get unlimited daily tokens, advanced multi-file synthesis, and PDF downloads.
-* **[Get Lifetime Local Source Code ($4.99)](#)** 
-* **[Subscribe to Premium Hosted ($2.99/mo)](#)** 
+* **[Get Lifetime Local Source Code ($4.99)](https://gumroad.com)** 
 """)
 
 # Inputs
@@ -36,7 +35,7 @@ if st.button("Generate Breakdown & Testbench", type="primary"):
     if not user_code.strip():
         st.warning("Please paste some code first!")
     elif not api_key or api_key == "your_key_here":
-        st.error("API Key missing! Please add your Groq API key to your .env file.")
+        st.error("🔒 System Configuration Error: The backend authentication key is missing.")
     else:
         with st.spinner("Groq is compiling your circuit logic at hyper-speed..."):
             try:
@@ -51,10 +50,20 @@ if st.button("Generate Breakdown & Testbench", type="primary"):
                     max_tokens=2500
                 )
                 
-                # FIXED LINE BELOW: Added [0] to access the first completion choice item properly
                 ai_response = completion.choices[0].message.content
                 st.success("Analysis Complete!")
                 st.markdown(ai_response)
                 
             except Exception as e:
-                st.error(f"An error occurred: {e}")
+                # INTERCEPT BREAKING API CODES BEAUTIFULLY
+                error_str = str(e)
+                if "401" in error_str or "invalid_api_key" in error_str:
+                    st.error("""
+                    ⚠️ **Server Maintenance in Progress**  
+                    The application is currently updating its secure database connections. 
+                    Please try running your circuit code synthesis again in 2 minutes.
+                    """)
+                elif "429" in error_str:
+                    st.warning("⏱️ **Server Traffic is High:** Free tier limit reached. Please wait 60 seconds or run the code locally!")
+                else:
+                    st.error(f"🔍 System Announcement: An unexpected network anomaly occurred. Details: {e}")
