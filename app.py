@@ -50,6 +50,7 @@ if st.button("Generate Breakdown & Testbench", type="primary"):
                     max_tokens=2500
                 )
                 
+                # FIXED: Mapped choice index [0] to extract text flawlessly
                 ai_response = completion.choices[0].message.content
                 st.success("Analysis Complete!")
                 st.markdown(ai_response)
